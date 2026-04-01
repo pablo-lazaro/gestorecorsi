@@ -14,8 +14,8 @@ class View(ft.UserControl):
         # graphical elements
         self._title = None
 
-        self.ddPD = None
-        self.ddCodins = None
+        self.ddPD = None # Menu a tendina, inizializzato a none, poi vediamo
+        self.ddCodins = None # Drop down codice insegnamento
         self.btnPrintCorsiPD = None
         self.btnPrintIscrittiCorsiPD = None
         self.btnPrintIscrittiCodins = None
@@ -29,27 +29,29 @@ class View(ft.UserControl):
 
         #ROW1
         self.ddPD = ft.Dropdown(label="Periodo Didattico",
-                                options = [ft.dropdown.Option("I"), ft.dropdown.Option("II")],
+                                options = [ft.dropdown.Option("I"), ft.dropdown.Option("II")], # L eopzioni del dropdown è una lista di opzioni
                                 width=200)
+                                # Dropdown è una parola chiave (anche dropdow.Option (sarebbero le opzioni della tendina)
         self.btnPrintCorsiPD = ft.ElevatedButton(text="Stampa Corsi",
                                                  on_click=self._controller.handlePrintCorsiPD,
                                                  width=300)
         self.btnPrintIscrittiCorsiPD = ft.ElevatedButton(text="Stampa numero iscritto",
-                                                 on_click=self._controller.handlePrintIscrittiCorsiPD,
+                                                 on_click=self._controller.handlePrintIscrittiCorsiPD, # on_click è il metodo del bottone, si scrive sul controller
                                                  width=300)
 
-        row1 = ft.Row([self.ddPD, self.btnPrintCorsiPD, self.btnPrintIscrittiCorsiPD])
+        row1 = ft.Row([self.ddPD, self.btnPrintCorsiPD, self.btnPrintIscrittiCorsiPD], alignment=ft.MainAxisAlignment.CENTER)
 
-        self.ddCodins = ft.Dropdown(label = "Corso", width=200)
-        self._controller.fillddCodins()
+        self.ddCodins = ft.Dropdown(label = "Corso", width=200) # Non sappiamo ancora le opzioni perche sono contenute sul database
+        self._controller.fillddCodins() # Una volta creato il dropdown posso chiedere al controlelr di riempirlo
+
         self.btnPrintIscrittiCodins = ft.ElevatedButton(text = "Stampa iscritti al corso",
                                                         on_click = self._controller.handlePrintIscrittiCodins,
-                                                 width=300)
+                                                 width=300) # width è quanto sono lunghi i pulsanti
         self.btnPrintCDSCodins = ft.ElevatedButton(text = "Stampa CDS afferenti",
                                                    on_click = self._controller.handlePrintCDSCodins,
                                                  width=300)
 
-        row2 = ft.Row([self.ddCodins, self.btnPrintIscrittiCodins, self.btnPrintCDSCodins])
+        row2 = ft.Row([self.ddCodins, self.btnPrintIscrittiCodins, self.btnPrintCDSCodins], alignment=ft.MainAxisAlignment.CENTER)
         self._page.add(row1, row2)
 
         # List View where the reply is printed

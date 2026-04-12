@@ -2,6 +2,7 @@ import flet as ft
 
 from model.model import Model
 
+# Lista di metodi che regolano come si comporta l'interfaccia
 
 class Controller:
     def __init__(self, view):
@@ -47,9 +48,11 @@ class Controller:
 
     def handlePrintIscrittiCorsiPD(self, e):
 
+        # Devo recuperare il PD e lavorarci su con il metodo
+
         self._view.txt_result.controls.clear()
 
-        pd = self._view.ddPD.value  # valore del dd
+        pd = self._view.ddPD.value  # valore del dd (I o II)
 
         if pd is None:
             (self._view.create_alert("Attenzione, selezionare un periodo didattico."))
@@ -61,7 +64,7 @@ class Controller:
         else:
             pdInt = 2
 
-        corsiPD = self._model.getCorsiPDwIscritti(pdInt)
+        corsiPD = self._model.getCorsiPDwIscritti(pdInt) # Questo da come risultato una lista
 
         if not len(corsiPD): # è uguale a dire if len(corsiPD) == 0
             self._view.txt_result.controls.append(
@@ -75,7 +78,7 @@ class Controller:
 
         for c in corsiPD:
             self._view.txt_result.controls.append(
-                ft.Text(f"{c[0]} -- N iscritti: {c[1]}")
+                ft.Text(f"{c[0]} -- N iscritti: {c[1]}") # Lo scriviamo in questo formato perchè è una tupla
             )
         self._view.update_page()
 
@@ -84,12 +87,13 @@ class Controller:
 
         self._view.txt_result.controls.clear()
 
-        if self._ddCodinsValue is None:
+        if self._ddCodinsValue is None: # self._ddCodinsValue è un oggetto
             self._view.create_alert("Per favore, selezionare un insegnamento")
             self._view.update_page()
             return
 
         # Se arriviamo qui, posso recuperare gli studenti
+
         studenti = self._model.getSudentiCorso(self._ddCodinsValue.codins)
 
         if not len(studenti):
@@ -134,20 +138,29 @@ class Controller:
             self._view.update_page()
 
 
-    def fillddCodins(self): # Questo metod si collegherà al database e prenderà i codici
+    def fillddCodins(self): # Questo metod si collegherà al database e prenderà i codici, riempe il dorpdown
         # for cod in self._model.getCodins(): # assumo di avere un metodo nel modello che mi da i codici dell'insegnamento
         #     self._view.ddCodins.options.append(
         #         ft.dropdown.Option(cod)
         #     )
 
-        for c in self._model.getAllCorsi():
+        # Con il metodo sopra non abbiamo l'insegamento, abbiamo solo il codice
+        # Ora (consigliato) vogliamo rimpire il dropdown non con delle stringhe ma con degli oggetti
+        # quando useremo i pulsanti useremo gli oggetti con solo i codici
+
+        # ALternativa -->
+
+        for c in self._model.getAllCorsi(): # I codici li prende dal modello (assumo che ci sia un metodo che mi da i codici)
+
             self._view.ddCodins.options.append(ft.dropdown.Option( # questa anuova opzione non è piu una stringa ma un oggetto di tipo corso
-                key = c.codins,
-                data = c,
+                # Visto che è un oggetto che mettiamo a Option, e non una stringa, dobbiamo mettere alcuni parametri
+
+                key = c.codins, # Stringa che viene visualizzata nel menu (quello che visualizziamo
+                data = c, # Associando l'oggetto corso (Oggetto vero e proprio che inseriamo)
                 on_click = self._choiceDDCodins # metodo del controller che associamo alla selezione di questa voce
             ))
             pass
 
     def _choiceDDCodins(self, e): # arriva l'evento, leggiamo la selezione dell'utente e la salviamo in una variabile locale
-        self._ddCodinsValue = e.control.data # --> oggetto di tipo corso che è stato selezionato dall'utente
+        self._ddCodinsValue = e.control.data # --> oggetto di tipo corso che è stato selezionato dall'utente, è cui che si salva la variabile che usiamo nelle funzioni
         print(self._ddCodinsValue)

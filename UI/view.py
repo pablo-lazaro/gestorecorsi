@@ -14,6 +14,8 @@ class View(ft.UserControl):
         # graphical elements
         self._title = None
 
+        # Definiamo il costruttore per tutte le cose dell'interfaccia (non è obbligatorio)
+
         self.ddPD = None # Menu a tendina, inizializzato a none, poi vediamo
         self.ddCodins = None # Drop down codice insegnamento
         self.btnPrintCorsiPD = None
@@ -32,7 +34,8 @@ class View(ft.UserControl):
                                 options = [ft.dropdown.Option("I"), ft.dropdown.Option("II")], # L eopzioni del dropdown è una lista di opzioni
                                 width=200)
                                 # Dropdown è una parola chiave (anche dropdow.Option (sarebbero le opzioni della tendina)
-        self.btnPrintCorsiPD = ft.ElevatedButton(text="Stampa Corsi",
+
+        self.btnPrintCorsiPD = ft.ElevatedButton(text="Stampa Corsi", #Testo del pulsante
                                                  on_click=self._controller.handlePrintCorsiPD,
                                                  width=300)
         self.btnPrintIscrittiCorsiPD = ft.ElevatedButton(text="Stampa numero iscritto",
@@ -40,6 +43,8 @@ class View(ft.UserControl):
                                                  width=300)
 
         row1 = ft.Row([self.ddPD, self.btnPrintCorsiPD, self.btnPrintIscrittiCorsiPD], alignment=ft.MainAxisAlignment.CENTER)
+
+        # ROW 2
 
         self.ddCodins = ft.Dropdown(label = "Corso", width=200) # Non sappiamo ancora le opzioni perche sono contenute sul database
         self._controller.fillddCodins() # Una volta creato il dropdown posso chiedere al controlelr di riempirlo

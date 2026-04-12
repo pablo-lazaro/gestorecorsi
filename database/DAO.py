@@ -2,6 +2,7 @@ from database.DB_connect import DBConnect
 from model.corso import Corso
 from model.studente import Studente
 
+# Listone di metodi che faranno le query al databas
 
 class DAO():
 
@@ -37,6 +38,8 @@ class DAO():
 
         res = []
         for row in cursor:
+
+            # Dovro fare l'append di un oggetto corso, quindi dovrò crearmi il DTO Corso (perche?)
             res.append(Corso(
                 codins = row["codins"],
                 crediti = row["crediti"],
@@ -47,7 +50,7 @@ class DAO():
 
         cursor.close()
         cnx.close()
-        return res
+        return res # Viene restituita una lista di oggetti di tipo corso
 
     @staticmethod
     def getCorsiPD(pd):
@@ -56,13 +59,13 @@ class DAO():
 
         query = """SELECT *
                     FROM corso c
-                    WHERE c.pd = %s"""
+                    WHERE c.pd = %s""" # %s è un parametro
 
-        cursor.execute(query, (pd,))
+        cursor.execute(query, (pd,))  # Quando chiameremo questa query dovremmo avere un parametro in input
 
         res = []
         for row in cursor:
-            res.append(Corso(**row))
+            res.append(Corso(**row)) # Il ** fa l'unpack del dizionario e passa ad ogni proprietà di quell'oggetto l'equivalente valore la cui chiave è la stessa
 
         cursor.close()
         cnx.close()
@@ -87,7 +90,7 @@ class DAO():
                               crediti=row["crediti"],
                               nome=row["nome"],
                               pd=row["pd"]),
-                        row["n"]))
+                        row["n"])) # Devo immaginarmi questo come una tabella nuova, con il count ho creato una nuova colonna
 
         cursor.close()
         cnx.close()
